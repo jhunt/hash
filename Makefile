@@ -20,9 +20,13 @@
 #
 
 default: run
-all:     run
+all: run
+	look . | ./check
 
-HASH_SRC := algo/murmur3.c
+HASH_SRC := algo/murmur3.c \
+            algo/djb2.c \
+            algo/sdbm.c \
+            algo/xor.c
 HASH_OBJ := $(HASH_SRC:.c=.o)
 
 run.o: run.c $(HASH_SRC)

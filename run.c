@@ -26,6 +26,9 @@ typedef unsigned int (*hash_fn)(const char*, unsigned long, unsigned int);
 
 #define HASH_FN(f) extern unsigned int (f)(const char*, unsigned long, unsigned int)
 HASH_FN(murmur3_32);
+HASH_FN(djb2_32);
+HASH_FN(sdbm_32);
+HASH_FN(xor_32);
 #undef HASH_FN
 
 static void usage(const char *name)
@@ -34,13 +37,17 @@ static void usage(const char *name)
 		fprintf(stderr, "USAGE: %s <algo>\n\n", name);
 
 	fprintf(stderr, "Supported hash algorithms:\n"
-	                "  - murmur3_32\n");
+	                "  - murmur3_32\n"
+	                "  - djb2_32\n"
+	                "  - sdbm_32\n"
+	                "  - xor_32\n");
 }
 
 static int run(hash_fn f)
 {
-	int n = 0;
+	int i, n = 0;
 	char *p, buf[8192];
+	int bins[64] = {0};
 
 	while (fgets(buf, 8192, stdin) != NULL) {
 		n++;
@@ -51,7 +58,11 @@ static int run(hash_fn f)
 		}
 		*p = '\0';
 
-		printf("H(\"%s\") = %#8x\n", buf, f(buf, strlen(buf), 0));
+		bins[f(buf, strlen(buf), 0) % 64]++;
+	}
+
+	for (i = 0; i < 64; i++) {
+		printf("%d\n", bins[i]);
 	}
 	return 0;
 }
@@ -65,6 +76,9 @@ int main(int argc, char **argv)
 
 #define CHECK(s) if (strcmp(argv[1], #s) == 0) return run(s)
 	CHECK(murmur3_32);
+	CHECK(djb2_32);
+	CHECK(sdbm_32);
+	CHECK(xor_32);
 #undef CHECK
 
 	fprintf(stderr, "Unrecognized hash algorithm '%s'\n", argv[1]);

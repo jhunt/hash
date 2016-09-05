@@ -15,3 +15,24 @@ Above all, this _test suite_ strives to be flexible, enabling new
 tests corpora to be integrated with minimal effort.
 
 I hope you find this useful.
+
+Fitness Tests
+-------------
+
+In order to gauge the _fitness_ of a particular hash function, we
+can check _simple uniformity_, or how evenly the algorithm
+distributes output values.  A hash function that always returns
+the value `42` is decidedly non-uniform.
+
+_Simple_ uniformity must be differentiated from _random_
+uniformity.  For simple uniformity, we don't care how random the
+distribution appears, we just care that it is even.  Random
+uniformity has important implications for
+_cryptographically-secure_ hashing functions, but for simple hash
+tables (my original problem space) it may not be worth the effort.
+
+Results
+-------
+
+![Scatter Plot][viz/scatter.png]
+![BoxPlot][viz/whisker.png]

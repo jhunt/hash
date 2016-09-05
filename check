@@ -1,0 +1,93 @@
+#!/bin/bash
+
+mkdir -p viz
+if [[ ! -x ./run ]]; then
+  echo "./run not found.  did you build the software?"
+  exit 1
+fi
+
+cat > .input
+trap "rm -f .input" INT QUIT TERM EXIT
+
+rm -f out.*
+for algo in murmur3_32 \
+            djb2_32 \
+            sdbm_32 \
+            xor_32; do
+  ./run ${algo} > out.${algo} < .input
+done
+
+paste out.{murmur3_32,djb2_32,sdbm_32,xor_32} > out.dat
+
+(
+cat <<EOF
+set terminal png
+
+set style boxplot outliers
+set style fill solid 0.25 border -1
+set style boxplot outliers pointtype 7
+set style data boxplot
+set boxwidth  0.2
+set pointsize 0.5
+
+unset key
+set border 2
+set xtics nomirror
+set ytics nomirror
+EOF
+
+n=0
+echo -n "set xtics ("
+for algo in murmur3_32 \
+            djb2_32 \
+            sdbm_32 \
+            xor_32; do
+  label=$(echo "${algo}" | sed -e 's@_32@/32@g');
+  if [[ $n -ne 0 ]]; then
+    echo -n ", ";
+  fi
+  n=$(( n + 1 ))
+  echo -n "\"${label}\" $n"
+done
+echo ") scale 0.0"
+
+n=0
+echo -n "plot "
+for algo in murmur3_32 \
+            djb2_32 \
+            sdbm_32 \
+            xor_32; do
+  if [[ $n -ne 0 ]]; then
+    echo -n ", '' "
+  else
+    echo -n "'out.dat' "
+  fi
+  n=$(( n + 1 ))
+  echo -n "using (${n}.0):$n"
+done
+) | tee | gnuplot > viz/whisker.png
+
+(
+cat <<EOF
+set terminal png
+EOF
+
+n=0
+for algo in murmur3_32 \
+            djb2_32 \
+            sdbm_32 \
+            xor_32; do
+  label=$(echo "${algo}" | sed -e 's@_32@/32@g');
+  if [[ $n -ne 0 ]]; then
+    echo -n "     "
+  else
+    echo -n "plot "
+  fi
+  n=$(( n + 1 ))
+  echo -n "'out.dat' index 0 using $n title \"${label}\""
+  if [[ $algo != "xor_32" ]]; then
+    echo -n ", \\"
+  fi
+  echo
+done
+) | tee | gnuplot > viz/scatter.png
