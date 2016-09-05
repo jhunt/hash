@@ -6,6 +6,8 @@ if [[ -z $1 ]]; then
   algos=( murmur3_32
           djb2_32
           jenkins1_32
+          kr_32
+          lookup3_32
           sdbm_32
           xor_32 )
 else

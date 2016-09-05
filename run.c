@@ -28,6 +28,8 @@ typedef unsigned int (*hash_fn)(const char*, unsigned long, unsigned int);
 HASH_FN(murmur3_32);
 HASH_FN(djb2_32);
 HASH_FN(jenkins1_32);
+HASH_FN(kr_32);
+HASH_FN(lookup3_32);
 HASH_FN(sdbm_32);
 HASH_FN(xor_32);
 #undef HASH_FN
@@ -41,6 +43,8 @@ static void usage(const char *name)
 	                "  - murmur3_32\n"
 	                "  - djb2_32\n"
 	                "  - jenkins1_32\n"
+	                "  - kr_32\n"
+	                "  - lookup3_32\n"
 	                "  - sdbm_32\n"
 	                "  - xor_32\n");
 }
@@ -80,6 +84,8 @@ int main(int argc, char **argv)
 	CHECK(murmur3_32);
 	CHECK(djb2_32);
 	CHECK(jenkins1_32);
+	CHECK(kr_32);
+	CHECK(lookup3_32);
 	CHECK(sdbm_32);
 	CHECK(xor_32);
 #undef CHECK
