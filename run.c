@@ -27,6 +27,7 @@ typedef unsigned int (*hash_fn)(const char*, unsigned long, unsigned int);
 #define HASH_FN(f) extern unsigned int (f)(const char*, unsigned long, unsigned int)
 HASH_FN(murmur3_32);
 HASH_FN(djb2_32);
+HASH_FN(jenkins1_32);
 HASH_FN(sdbm_32);
 HASH_FN(xor_32);
 #undef HASH_FN
@@ -39,6 +40,7 @@ static void usage(const char *name)
 	fprintf(stderr, "Supported hash algorithms:\n"
 	                "  - murmur3_32\n"
 	                "  - djb2_32\n"
+	                "  - jenkins1_32\n"
 	                "  - sdbm_32\n"
 	                "  - xor_32\n");
 }
@@ -77,6 +79,7 @@ int main(int argc, char **argv)
 #define CHECK(s) if (strcmp(argv[1], #s) == 0) return run(s)
 	CHECK(murmur3_32);
 	CHECK(djb2_32);
+	CHECK(jenkins1_32);
 	CHECK(sdbm_32);
 	CHECK(xor_32);
 #undef CHECK

@@ -1,5 +1,17 @@
 #!/bin/bash
 
+declare -a algos
+
+if [[ -z $1 ]]; then
+  algos=( murmur3_32
+          djb2_32
+          jenkins1_32
+          sdbm_32
+          xor_32 )
+else
+  algos="$@"
+fi
+
 mkdir -p viz
 if [[ ! -x ./run ]]; then
   echo "./run not found.  did you build the software?"
@@ -10,14 +22,12 @@ cat > .input
 trap "rm -f .input" INT QUIT TERM EXIT
 
 rm -f out.*
-for algo in murmur3_32 \
-            djb2_32 \
-            sdbm_32 \
-            xor_32; do
+for algo in ${algos[@]}; do
   ./run ${algo} > out.${algo} < .input
 done
 
-paste out.{murmur3_32,djb2_32,sdbm_32,xor_32} > out.dat
+joinx() { local IFS=","; echo "$*"; }
+eval "paste out.{$(joinx ${algos[@]})}" > out.dat
 
 (
 cat <<EOF
@@ -38,10 +48,7 @@ EOF
 
 n=0
 echo -n "set xtics ("
-for algo in murmur3_32 \
-            djb2_32 \
-            sdbm_32 \
-            xor_32; do
+for algo in ${algos[@]}; do
   label=$(echo "${algo}" | sed -e 's@_32@/32@g');
   if [[ $n -ne 0 ]]; then
     echo -n ", ";
@@ -53,10 +60,7 @@ echo ") scale 0.0"
 
 n=0
 echo -n "plot "
-for algo in murmur3_32 \
-            djb2_32 \
-            sdbm_32 \
-            xor_32; do
+for algo in ${algos[@]}; do
   if [[ $n -ne 0 ]]; then
     echo -n ", '' "
   else
@@ -73,10 +77,7 @@ set terminal png
 EOF
 
 n=0
-for algo in murmur3_32 \
-            djb2_32 \
-            sdbm_32 \
-            xor_32; do
+for algo in ${algos[@]}; do
   label=$(echo "${algo}" | sed -e 's@_32@/32@g');
   if [[ $n -ne 0 ]]; then
     echo -n "     "

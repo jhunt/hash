@@ -25,6 +25,7 @@ all: run
 
 HASH_SRC := algo/murmur3.c \
             algo/djb2.c \
+            algo/jenkins1.c \
             algo/sdbm.c \
             algo/xor.c
 HASH_OBJ := $(HASH_SRC:.c=.o)
