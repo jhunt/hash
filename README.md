@@ -38,19 +38,19 @@ Hashing ~235k English words over 64 bins (calculated `H(s) % 64`),
 we can look at the scatter plot of bin clustering to get a gut
 feel for how uniform each hash is:
 
-![Scatter Plot][viz/scatter-all.png]
+![Scatter Plot](viz/scatter-all.png)
 
 Yeesh.  XOR looks terrible, but that's not unexpected.
 Here's the same test, without XOR:
 
-![Scatter Plot (without XOR this time)][viz/scatter-serious.png]
+![Scatter Plot (without XOR this time)](viz/scatter-serious.png)
 
 We can do better on judging variance by using a boxplot:
 
-![Box Plot][viz/whisker-all.png]
+![Box Plot](viz/whisker-all.png)
 
 As before, XOR is off the charts, and makes it difficut to see the
 relative differences between the other, more serious hashing
 algorithms.  Here's the same test without XOR:
 
-![Box Plot (without XOR this time)][viz/whisker-serious.png]
+![Box Plot (without XOR this time)](viz/whisker-serious.png)
