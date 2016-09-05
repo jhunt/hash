@@ -38,3 +38,4 @@ run: run.o $(HASH_OBJ)
 
 clean:
 	rm -f run run.o $(HASH_OBJ)
+	rm -f out.*
