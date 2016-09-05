@@ -34,5 +34,5 @@ tables (my original problem space) it may not be worth the effort.
 Results
 -------
 
-![Scatter Plot][viz/scatter.png]
-![BoxPlot][viz/whisker.png]
+![Scatter Plot](viz/scatter.png)
+![BoxPlot](viz/whisker.png)
