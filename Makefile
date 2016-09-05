@@ -21,7 +21,7 @@
 
 default: run
 	./check < corpus/words-all
-	./check < corpus/words-all serious {djb2,kr,jenkins1,lookup3,murmur3,sdbm}_32
+	./check < corpus/words-all serious {djb2,kr,jenkins1,lookup3,murmur3,sdbm,spooky2}_32
 
 HASH_SRC := algo/murmur3.c \
             algo/djb2.c \
@@ -29,6 +29,7 @@ HASH_SRC := algo/murmur3.c \
             algo/kr.c \
             algo/lookup3.c \
             algo/sdbm.c \
+            algo/spooky2.c \
             algo/xor.c
 HASH_OBJ := $(HASH_SRC:.c=.o)
 

@@ -10,6 +10,7 @@ if [[ -z $1 ]]; then
           kr_32
           lookup3_32
           sdbm_32
+          spooky2_32
           xor_32 )
 else
   name=$1
