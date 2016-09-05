@@ -1,6 +1,7 @@
 #!/bin/bash
 
 declare -a algos
+name=all
 
 if [[ -z $1 ]]; then
   algos=( murmur3_32
@@ -11,10 +12,17 @@ if [[ -z $1 ]]; then
           sdbm_32
           xor_32 )
 else
+  name=$1
+  shift
+
+  if [[ -z $1 ]]; then
+    echo >&2 "USAGE: $0"
+    echo >&2 "       $0 NAME algo1 [algo2 ...]"
+    exit 1
+  fi
   algos="$@"
 fi
 
-mkdir -p viz
 if [[ ! -x ./run ]]; then
   echo "./run not found.  did you build the software?"
   exit 1
@@ -23,6 +31,7 @@ fi
 cat > .input
 trap "rm -f .input" INT QUIT TERM EXIT
 
+mkdir -p viz
 rm -f out.*
 for algo in ${algos[@]}; do
   ./run ${algo} > out.${algo} < .input
@@ -71,7 +80,7 @@ for algo in ${algos[@]}; do
   n=$(( n + 1 ))
   echo -n "using (${n}.0):$n"
 done
-) | tee | gnuplot > viz/whisker.png
+) | tee | gnuplot > viz/whisker-${name}.png
 
 (
 cat <<EOF
@@ -93,4 +102,4 @@ for algo in ${algos[@]}; do
   fi
   echo
 done
-) | tee | gnuplot > viz/scatter.png
+) | tee | gnuplot > viz/scatter-${name}.png

@@ -20,8 +20,8 @@
 #
 
 default: run
-all: run
 	look . | ./check
+	look . | ./check serious {djb2,kr,jenkins1,lookup3,murmur3,sdbm}_32
 
 HASH_SRC := algo/murmur3.c \
             algo/djb2.c \
