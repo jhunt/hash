@@ -28,18 +28,18 @@
 #define ROL(x,y) ((x) << (y) | ((x) >> (64 - (y))))
 
 #define mix(data,s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11) {\
-	 s0 += data[0];     s2 ^= s10;   s11 ^= s0;     s0 = ROL(s0,11);   s11 += s1;  \
-	 s1 += data[1];     s3 ^= s11;   s0 ^= s1;      s1 = ROL(s1,32);    s0 += s2;  \
-	 s2 += data[2];     s4 ^= s0;    s1 ^= s2;      s2 = ROL(s2,43);    s1 += s3;  \
-	 s3 += data[3];     s5 ^= s1;    s2 ^= s3;      s3 = ROL(s3,31);    s2 += s4;  \
-	 s4 += data[4];     s6 ^= s2;    s3 ^= s4;      s4 = ROL(s4,17);    s3 += s5;  \
-	 s5 += data[5];     s7 ^= s3;    s4 ^= s5;      s5 = ROL(s5,28);    s4 += s6;  \
-	 s6 += data[6];     s8 ^= s4;    s5 ^= s6;      s6 = ROL(s6,39);    s5 += s7;  \
-	 s7 += data[7];     s9 ^= s5;    s6 ^= s7;      s7 = ROL(s7,57);    s6 += s8;  \
-	 s8 += data[8];    s10 ^= s6;    s7 ^= s8;      s8 = ROL(s8,55);    s7 += s9;  \
-	 s9 += data[9];    s11 ^= s7;    s8 ^= s9;      s9 = ROL(s9,54);    s8 += s10; \
-	s10 += data[10];    s0 ^= s8;    s9 ^= s10;    s10 = ROL(s10,22);   s9 += s11; \
-	s11 += data[11];    s1 ^= s9;    s10 ^= s11;   s11 = ROL(s11,46);  s10 += s0;  \
+	 s0 += (data)[0];     s2 ^= s10;   s11 ^= s0;     s0 = ROL(s0,11);   s11 += s1;  \
+	 s1 += (data)[1];     s3 ^= s11;   s0 ^= s1;      s1 = ROL(s1,32);    s0 += s2;  \
+	 s2 += (data)[2];     s4 ^= s0;    s1 ^= s2;      s2 = ROL(s2,43);    s1 += s3;  \
+	 s3 += (data)[3];     s5 ^= s1;    s2 ^= s3;      s3 = ROL(s3,31);    s2 += s4;  \
+	 s4 += (data)[4];     s6 ^= s2;    s3 ^= s4;      s4 = ROL(s4,17);    s3 += s5;  \
+	 s5 += (data)[5];     s7 ^= s3;    s4 ^= s5;      s5 = ROL(s5,28);    s4 += s6;  \
+	 s6 += (data)[6];     s8 ^= s4;    s5 ^= s6;      s6 = ROL(s6,39);    s5 += s7;  \
+	 s7 += (data)[7];     s9 ^= s5;    s6 ^= s7;      s7 = ROL(s7,57);    s6 += s8;  \
+	 s8 += (data)[8];    s10 ^= s6;    s7 ^= s8;      s8 = ROL(s8,55);    s7 += s9;  \
+	 s9 += (data)[9];    s11 ^= s7;    s8 ^= s9;      s9 = ROL(s9,54);    s8 += s10; \
+	s10 += (data)[10];    s0 ^= s8;    s9 ^= s10;    s10 = ROL(s10,22);   s9 += s11; \
+	s11 += (data)[11];    s1 ^= s9;    s10 ^= s11;   s11 = ROL(s11,46);  s10 += s0;  \
 }
 
 #define endpart(h0,h1,h2,h3,h4,h5,h6,h7,h8,h9,h10,h11) {\
@@ -68,35 +68,32 @@
 
 static void spooky2_128(const char *str, unsigned long len, uint64_t *hash1, uint64_t *hash2)
 {
+	const uint64_t *block;
 	uint64_t h0, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11;
+	unsigned long nblock;
 	uint64_t buf[VARS];
-	uint64_t *e;
-	union {
-		const uint8_t *p8;
-		uint64_t *p64;
-	} u;
-	size_t r;
+	size_t r, i;
 
 	h0 = h3 = h6 = h9  = *hash1;
 	h1 = h4 = h7 = h10 = *hash2;
 	h2 = h5 = h8 = h11 = 0xdeadbeefdeadbeefLL;
+	nblock = len / BLOCK;
+	block = (const uint64_t *)str;
 
-	u.p8 = (const uint8_t *)str;
-	e = u.p64 + (len/BLOCK)*VARS;
-
-	while (u.p64 < e) { 
-		mix(u.p64, h0, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11);
-		u.p64 += VARS;
-	}
+	for (i = 0; i < nblock; i++, block += BLOCK)
+		mix(block, h0, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11);
 
 	// handle the last partial block of BLOCK bytes
-	r = len - ((const uint8_t *)e - u.p8);
-	memcpy(buf, e, r);
-	memset(((uint8_t *)buf)+r, 0, BLOCK-r);
-	((uint8_t *)buf)[BLOCK-1] = r;
+	r = len % BLOCK;
+	if (r != 0) {
+		memcpy(buf, block, r);
+		memset((uint8_t *)buf + r, 0, sizeof(buf) - r);
+		((uint8_t *)buf)[sizeof(buf) - 1] = r;
 
-	// do some final mixing 
-	end(buf, h0, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11);
+		// do some final mixing
+		end(buf, h0, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11);
+	}
+
 	*hash1 = h0;
 	*hash2 = h1;
 }
