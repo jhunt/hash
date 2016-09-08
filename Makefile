@@ -24,7 +24,8 @@ IMAGES := viz/bins/scatter-all.png \
           viz/bins/scatter-serious.png \
           viz/bins/boxplot-serious.png \
           viz/ns/scatter.png \
-          viz/ns/boxplot.png
+          viz/ns/boxplot.png \
+          viz/ns/fast.png
 
 HASH_SRC := algo/murmur3.c \
             algo/djb2.c \
@@ -37,6 +38,8 @@ HASH_SRC := algo/murmur3.c \
 HASH_OBJ := $(HASH_SRC:.c=.o)
 
 default: $(IMAGES)
+
+CFLAGS := -O0
 
 datafiles: data/bins.dat data/ns.dat
 data/bins.dat: run
@@ -56,6 +59,8 @@ viz/bins/boxplot-serious.png: viz/bins/boxplot-serious.sh data/bins.dat
 viz/ns/scatter.png: viz/ns/scatter.sh data/ns.dat
 	gnuplot < $< > $@
 viz/ns/boxplot.png: viz/ns/boxplot.sh data/ns.dat
+	gnuplot < $< > $@
+viz/ns/fast.png: viz/ns/fast.sh data/ns.dat
 	gnuplot < $< > $@
 
 run.o: run.c $(HASH_SRC)

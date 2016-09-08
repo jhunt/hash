@@ -1,6 +1,8 @@
 #!/usr/bin/env gnuplot
 set terminal png
 
+set yrange [0:100]
+
 datafile = 'data/ns.dat'
 plot datafile index 0 using 1 title column, \
      datafile index 0 using 2 title column, \

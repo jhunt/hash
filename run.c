@@ -119,9 +119,38 @@ int main(int argc, char **argv)
 			l = strlen(buf);
 			for (j = 0; j < NUM_ALGOS; j++) {
 				timed(&t) {
-					(algos[i].fn)(buf, l, 0);
+					/* 10 */
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					/* 20 */
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					/* 30 */
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					/* 40 */
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					/* 50 */
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
+					(algos[j].fn)(buf, l, 0); (algos[j].fn)(buf, l, 0);
 				}
-				printf("%s%llu", j > 0 ? "\t" : "", timer_value(&t));
+				printf("%s%llu", j > 0 ? "\t" : "", timer_value(&t) / 50);
 			}
 			printf("\n");
 		}
