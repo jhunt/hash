@@ -19,9 +19,12 @@
 # IN THE SOFTWARE.
 #
 
-default: run
-	./check < corpus/words-all
-	./check < corpus/words-all serious {djb2,kr,jenkins1,lookup3,murmur3,sdbm,spooky2}_32
+IMAGES := viz/bins/scatter-all.png \
+          viz/bins/boxplot-all.png \
+          viz/bins/scatter-serious.png \
+          viz/bins/boxplot-serious.png \
+          viz/ns/scatter.png \
+          viz/ns/boxplot.png
 
 HASH_SRC := algo/murmur3.c \
             algo/djb2.c \
@@ -32,6 +35,28 @@ HASH_SRC := algo/murmur3.c \
             algo/spooky2.c \
             algo/xor.c
 HASH_OBJ := $(HASH_SRC:.c=.o)
+
+default: $(IMAGES)
+
+datafiles: data/bins.dat data/ns.dat
+data/bins.dat: run
+	./run bins >$@ <corpus/words-all
+data/ns.dat: run
+	./run ns   >$@ <corpus/words-all
+
+viz/bins/scatter-all.png: viz/bins/scatter-all.sh data/bins.dat
+	gnuplot < $< > $@
+viz/bins/scatter-serious.png: viz/bins/scatter-serious.sh data/bins.dat
+	gnuplot < $< > $@
+viz/bins/boxplot-all.png: viz/bins/boxplot-all.sh data/bins.dat
+	gnuplot < $< > $@
+viz/bins/boxplot-serious.png: viz/bins/boxplot-serious.sh data/bins.dat
+	gnuplot < $< > $@
+
+viz/ns/scatter.png: viz/ns/scatter.sh data/ns.dat
+	gnuplot < $< > $@
+viz/ns/boxplot.png: viz/ns/boxplot.sh data/ns.dat
+	gnuplot < $< > $@
 
 run.o: run.c $(HASH_SRC)
 run: run.o $(HASH_OBJ)
