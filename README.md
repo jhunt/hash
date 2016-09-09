@@ -37,22 +37,21 @@ Hashing ~235k English words over 64 bins (calculated `H(s) % 64`),
 we can look at the scatter plot of bin clustering to get a gut
 feel for how uniform each hash is:
 
-![Scatter Plot](viz/bins/scatter-all.png)
+![Scatter Plot](viz/bins/scatter.png)
 
-Yeesh.  XOR looks terrible, but that's not unexpected.
-Here's the same test, without XOR:
+Yeesh.  XOR looks terrible, but that's not unexpected.  The rest
+all seem to cluster around the middle (which is good!), so let's
+look at a consolidated boxplot to get a feel for quartile
+distribution:
 
-![Scatter Plot (without XOR this time)](viz/bins/scatter-serious.png)
-
-We can do better on judging variance by using a boxplot:
-
-![Box Plot](viz/bins/boxplot-all.png)
+![Simple Uniformity Boxplot](viz/bins/boxplot.png)
 
 As before, XOR is off the charts, and makes it difficut to see the
 relative differences between the other, more serious hashing
-algorithms.  Here's the same test without XOR:
+algorithms.  If we drop the worst three (murmur3/32, spooky2/32,
+and xor/32), the picture gets a little clearer:
 
-![Box Plot (without XOR this time)](viz/bins/boxplot-serious.png)
+![Box Plot (top performers)](viz/bins/fast.png)
 
 
 Timing Benchmarks
@@ -64,7 +63,7 @@ execution times of fifty runs of the hash function against each
 string in our training corpus.  This set of per-operation
 durations is graphed below as a boxploy:
 
-![Box Plot of Execution Times](viz/ns/boxplot.png)
+![Execution Times](viz/ns/boxplot.png)
 
 The y-axis is measured in nanoseconds.
 
@@ -74,7 +73,7 @@ to all the others.  If we drop the worst three (sdbm/32,
 lookup3/32, and jenkins1/32), we can see more nuance between the
 top performers:
 
-![Box Plot of Execution Times (without SDBM)](viz/ns/fast.png)
+![Execution Times (top performers)](viz/ns/fast.png)
 
 Incidentally, XOR has the best timing performance.  Given that
 it's a single assembly instruction per byte, that's not too

@@ -19,10 +19,9 @@
 # IN THE SOFTWARE.
 #
 
-IMAGES := viz/bins/scatter-all.png \
-          viz/bins/boxplot-all.png \
-          viz/bins/scatter-serious.png \
-          viz/bins/boxplot-serious.png \
+IMAGES := viz/bins/scatter.png \
+          viz/bins/boxplot.png \
+          viz/bins/fast.png \
           viz/ns/scatter.png \
           viz/ns/boxplot.png \
           viz/ns/fast.png
@@ -47,13 +46,11 @@ data/bins.dat: run
 data/ns.dat: run
 	./run ns   >$@ <corpus/words-all
 
-viz/bins/scatter-all.png: viz/bins/scatter-all.sh data/bins.dat
+viz/bins/scatter.png: viz/bins/scatter.sh data/bins.dat
 	gnuplot < $< > $@
-viz/bins/scatter-serious.png: viz/bins/scatter-serious.sh data/bins.dat
+viz/bins/boxplot.png: viz/bins/boxplot.sh data/bins.dat
 	gnuplot < $< > $@
-viz/bins/boxplot-all.png: viz/bins/boxplot-all.sh data/bins.dat
-	gnuplot < $< > $@
-viz/bins/boxplot-serious.png: viz/bins/boxplot-serious.sh data/bins.dat
+viz/bins/fast.png: viz/bins/fast.sh data/bins.dat
 	gnuplot < $< > $@
 
 viz/ns/scatter.png: viz/ns/scatter.sh data/ns.dat
