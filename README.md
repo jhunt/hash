@@ -31,8 +31,7 @@ uniformity has important implications for
 _cryptographically-secure_ hashing functions, but for simple hash
 tables (my original problem space) it may not be worth the effort.
 
-Results
--------
+### Results
 
 Hashing ~235k English words over 64 bins (calculated `H(s) % 64`),
 we can look at the scatter plot of bin clustering to get a gut
@@ -54,3 +53,37 @@ relative differences between the other, more serious hashing
 algorithms.  Here's the same test without XOR:
 
 ![Box Plot (without XOR this time)](viz/bins/boxplot-serious.png)
+
+
+Timing Benchmarks
+-----------------
+
+We also need to evaluate each hash algorithm according to how long
+it take to perform hashing operations.  To do that, we average the
+execution times of fifty runs of the hash function against each
+string in our training corpus.  This set of per-operation
+durations is graphed below as a boxploy:
+
+![Box Plot of Execution Times](viz/ns/boxplot.png)
+
+The y-axis is measured in nanoseconds.
+
+SDBM/32 has pretty dismal performance (75th percentile is no
+better than ~200ns/op and can get as high as ~300ns/op) compared
+to all the others, so let's drop it so that we can see more
+nuance:
+
+![Box Plot of Execution Times (without SDBM)](viz/ns/fast.png)
+
+Incidentally, XOR has the best timing performance.  Given that
+it's a single assembly instruction per byte, that's not too
+surprising.
+
+
+Conclusion
+----------
+
+DJB2 hash really comes out on top, given it's low time cot per
+hashing operation, and high simple uniformity.  This is based on
+single-word English text.  Other corpora may show different
+results, since hashing is highly dependent on the input keys.
