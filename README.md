@@ -70,8 +70,9 @@ The y-axis is measured in nanoseconds.
 
 SDBM/32 has pretty dismal performance (75th percentile is no
 better than ~200ns/op and can get as high as ~300ns/op) compared
-to all the others, so let's drop it so that we can see more
-nuance:
+to all the others.  If we drop the worst three (sdbm/32,
+lookup3/32, and jenkins1/32), we can see more nuance between the
+top performers:
 
 ![Box Plot of Execution Times (without SDBM)](viz/ns/fast.png)
 
