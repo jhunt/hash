@@ -83,7 +83,7 @@ surprising.
 Conclusion
 ----------
 
-DJB2 hash really comes out on top, given it's low time cot per
+DJB2 hash really comes out on top, given it's low time cost per
 hashing operation, and high simple uniformity.  This is based on
 single-word English text.  Other corpora may show different
 results, since hashing is highly dependent on the input keys.
