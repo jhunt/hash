@@ -36,15 +36,17 @@ HASH_SRC := algo/murmur3.c \
             algo/xor.c
 HASH_OBJ := $(HASH_SRC:.c=.o)
 
-default: $(IMAGES)
-
 CFLAGS := -O0
+CORPUS ?= corpus/words-all
 
+default: plot
+plot: $(IMAGES)
 datafiles: data/bins.dat data/ns.dat
+rerun: dataclean datafiles
 data/bins.dat: run
-	./run bins >$@ <corpus/words-all
+	./run bins >$@ <$(CORPUS)
 data/ns.dat: run
-	./run ns   >$@ <corpus/words-all
+	./run ns   >$@ <$(CORPUS)
 
 viz/bins/scatter.png: viz/bins/scatter.sh data/bins.dat
 	gnuplot < $< > $@
@@ -65,3 +67,5 @@ run: run.o $(HASH_OBJ)
 
 clean:
 	rm -f run run.o $(HASH_OBJ)
+dataclean:
+	rm data/*.dat
