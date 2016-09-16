@@ -66,7 +66,6 @@ int main(int argc, char **argv)
 		int i, j, n = 0;
 		char *p, buf[8192];
 		int bins[NUM_ALGOS][64] = {0};
-		unsigned int h;
 
 		while (fgets(buf, 8192, stdin) != NULL) {
 			n++;
