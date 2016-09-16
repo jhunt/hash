@@ -24,7 +24,7 @@
 #include <string.h>
 
 #define VARS   12
-#define BLOCK  VARS * 8
+#define BLOCK  (VARS * sizeof(uint64_t))
 #define ROL(x,y) ((x) << (y) | ((x) >> (64 - (y))))
 
 #define mix(data,s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11) {\
@@ -80,7 +80,7 @@ static void spooky2_128(const char *str, unsigned long len, uint64_t *hash1, uin
 	nblock = len / BLOCK;
 	block = (const uint64_t *)str;
 
-	for (i = 0; i < nblock; i++, block += BLOCK)
+	for (i = 0; i < nblock; i++, block += VARS)
 		mix(block, h0, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11);
 
 	// handle the last partial block of BLOCK bytes
