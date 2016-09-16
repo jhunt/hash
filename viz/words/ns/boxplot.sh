@@ -9,7 +9,7 @@ set style boxplot nooutliers pointtype 7
 set style data boxplot
 set boxwidth  0.2
 set pointsize 0.5
-set yrange [0:500]
+set yrange [0:200]
 
 unset key
 set border 2
