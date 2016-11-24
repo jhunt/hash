@@ -95,7 +95,7 @@ That is, a set of `key=value` pairs, separated by commas.  This is
 definitely _not_ English text, so let's re-run the fitness tests
 and timing benchmarks against a corpus of dummy qualified names.
 
-(As a side note: I wrote a small Perl script, [madlibs][madlibs],
+(Side note: I wrote a small Perl script, [madlibs][madlibs],
 that let me easily generate hundreds of thousands of test names.
 :+1:)
 
