@@ -25,9 +25,10 @@
 
 typedef unsigned int (*hash_fn)(const char*, unsigned long, unsigned int);
 
-#define NUM_ALGOS 8
+#define NUM_ALGOS 9
 extern unsigned int  (murmur3_32)(const char*, unsigned long, unsigned int);
 extern unsigned int     (djb2_32)(const char*, unsigned long, unsigned int);
+extern unsigned int    (fnv1a_32)(const char*, unsigned long, unsigned int);
 extern unsigned int (jenkins1_32)(const char*, unsigned long, unsigned int);
 extern unsigned int       (kr_32)(const char*, unsigned long, unsigned int);
 extern unsigned int  (lookup3_32)(const char*, unsigned long, unsigned int);
@@ -41,6 +42,7 @@ static struct {
 } algos[NUM_ALGOS] = {
 	{ "murmur3/32",  murmur3_32  },
 	{ "djb2/32",     djb2_32     },
+	{ "fnv1a/32",    fnv1a_32    },
 	{ "jenkins1/32", jenkins1_32 },
 	{ "kr/32",       kr_32       },
 	{ "lookup3/32",  lookup3_32  },

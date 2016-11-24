@@ -16,12 +16,12 @@ set border 2
 set xtics nomirror
 set ytics nomirror
 set xtics ( \
-      "djb2/32"     1, \
-      "kr/32"       2, \
-      "spooky2/32"  3  \
+      "djb2"     1, \
+      "kr"       2, \
+      "spooky2"  3  \
 ) scale 0.0
 
 datafile = 'data/qnames/ns.dat'
 plot datafile using (1.0):2, \
-     datafile using (2.0):4, \
-     datafile using (3.0):7
+     datafile using (2.0):5, \
+     datafile using (3.0):8

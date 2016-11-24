@@ -13,11 +13,12 @@ set border 2
 set xtics nomirror
 set ytics nomirror
 set xtics ( \
-      "djb2/32"     1, \
-      "jenkins1/32" 2, \
-      "kr/32"       3, \
-      "lookup3/32"  4, \
-      "sdbm/32"     5, \
+      "djb2"     1, \
+      "fnv1a"    2, \
+      "jenkins1" 3, \
+      "kr"       4, \
+      "lookup3"  5, \
+      "sdbm"     6, \
 ) scale 0.0
 
 datafile = 'data/words/bins.dat'
@@ -25,4 +26,5 @@ plot datafile using (1.0):2, \
      datafile using (2.0):3, \
      datafile using (3.0):4, \
      datafile using (4.0):5, \
-     datafile using (5.0):6
+     datafile using (5.0):6, \
+     datafile using (6.0):7

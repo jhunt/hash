@@ -9,4 +9,5 @@ plot datafile index 0 using 1 title column, \
      datafile index 0 using 5 title column, \
      datafile index 0 using 6 title column, \
      datafile index 0 using 7 title column, \
-     datafile index 0 using 8 title column
+     datafile index 0 using 8 title column, \
+     datafile index 0 using 9 title column

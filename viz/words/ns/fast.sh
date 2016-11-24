@@ -26,6 +26,6 @@ set xtics ( \
 datafile = 'data/words/ns.dat'
 plot datafile using (1.0):1, \
      datafile using (2.0):2, \
-     datafile using (3.0):4, \
-     datafile using (4.0):7, \
-     datafile using (5.0):8
+     datafile using (3.0):5, \
+     datafile using (4.0):8, \
+     datafile using (5.0):9

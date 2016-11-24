@@ -16,10 +16,10 @@ set border 2
 set xtics nomirror
 set ytics nomirror
 set xtics ( \
-      "murmur3/32"  1, \
-      "xor/32"      2  \
+      "murmur3"  1, \
+      "xor"      2  \
 ) scale 0.0
 
 datafile = 'data/qnames/ns.dat'
 plot datafile using (1.0):1, \
-     datafile using (2.0):8
+     datafile using (2.0):9

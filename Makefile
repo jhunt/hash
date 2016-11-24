@@ -34,6 +34,7 @@ IMAGES := viz/words/bins/scatter.png  \
 
 HASH_SRC := algo/murmur3.c  \
             algo/djb2.c     \
+            algo/fnv1a.c    \
             algo/jenkins1.c \
             algo/kr.c       \
             algo/lookup3.c  \

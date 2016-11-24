@@ -48,8 +48,8 @@ distribution:
 
 As before, xor is off the charts, and makes it difficut to see the
 relative differences between the other, more serious hashing
-algorithms.  If we drop the worst three (murmur3/32, spooky2/32,
-and xor/32), the picture gets a little clearer:
+algorithms.  If we drop the worst three (murmur3, spooky2,
+and xor), the picture gets a little clearer:
 
 ![Box Plot (top performers)](viz/words/bins/fast.png)
 
@@ -67,11 +67,11 @@ durations is graphed below as a boxplot:
 
 The y-axis is measured in nanoseconds.
 
-SDBM/32 has pretty dismal performance (75th percentile is no
-better than ~200ns/op and can get as high as ~300ns/op) compared
-to all the others.  If we drop the worst three (sdbm/32,
-lookup3/32, and jenkins1/32), we can see more nuance between the
-top performers:
+Both SDBM and FNV1a have pretty dismal performance (75th
+percentile is no better than ~200ns/op and can get as high as
+~300ns/op) compared to all the others.  If we drop the worst four
+(fnv1a, sdbm, lookup3, and jenkins1), we can see more
+nuance between the top performers:
 
 ![Execution Times (top performers)](viz/words/ns/fast.png)
 
@@ -109,16 +109,16 @@ get a gut feel of uniformity given our new inputs:
 
 ![Scatter Plot](viz/qnames/bins/scatter.png)
 
-Not much has changed; xor/32 is still terrible.  Let's look at the
+Not much has changed; xor is still terrible.  Let's look at the
 box plots:
 
 ![Simple Uniformity Boxplot](viz/qnames/bins/boxplot.png)
 
-We knew xor/32 was bad, but now we can also see that murmur2/32 is
+We knew xor was bad, but now we can also see that murmur2 is
 worse than the others, so let's drop those two out and hopefully
 get a better picture of the top performers:
 
-![Box Plot (without xor/32)](viz/qnames/bins/fast.png)
+![Box Plot (without xor)](viz/qnames/bins/fast.png)
 
 
 Timing Benchmarks (Qualified Names Edition)
@@ -136,14 +136,14 @@ The y-axis is meaured in nanoseconds.
 
 It seems quite clear that we have three "bands" of performance;
 murmur3 and xor are the fastest, followed by djb2, k&r, sdbm and
-spooky2 in the mid-range, with jenkins1 and lookup3 bringing up
-the rear as the slowest.
+spooky2 in the mid-range, with fnv1a, jenkins1 and lookup3
+bringing up the rear as the slowest.
 
 Let's focus on the middle tier:
 
 ![Execution Time](viz/qnames/ns/middle.png)
 
-djb2/32 is the clear winner with the least variation and the
+djb2 is the clear winner with the least variation and the
 quickest median per-hash execution speed at a little over 200ns.
 
 But why settle for the middle-tier when we have two candidates for
@@ -151,17 +151,17 @@ super-ultra-fast:
 
 ![Execution Time](viz/qnames/ns/fast.png)
 
-xor/32 sure is fast.  But so is murmur3/32, clocking in at a
-little under 40ns, 5x faster than djb2/32.
+xor sure is fast.  But so is murmur3, clocking in at a
+little under 40ns, 5x faster than djb2.
 
 
 Conclusion
 ----------
 
-For my purposes, djb2/32 and murmur3/32 are the two best options.
+For my purposes, djb2 and murmur3 are the two best options.
 **Two** best options?  Isn't that a cop-out?  Not really.  I'll
-probably be going with djb2/32 when I need uniformity, and
-murmur3/32 for raw speed of hashing.
+probably be going with djb2 when I need uniformity, and
+murmur3 for raw speed of hashing.
 
 
 
